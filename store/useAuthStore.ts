@@ -9,8 +9,8 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-    isLoggedIn: true,
-    hasOnbordingDone: false,
+    isLoggedIn: false,
+    hasOnbordingDone: true,
     login: () => set({ isLoggedIn: true }),
     logout: () => set({ isLoggedIn: false }),
     onBoardingDone: () => set({ hasOnbordingDone: true }),

@@ -1,20 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 
 interface CustomButtonProps {
     children: React.ReactNode;
     onPress: () => void;
     style?: ViewStyle;
     textStyle?: TextStyle;
+    loading?: boolean;
+    disabled?: boolean;
 }
 
-export default function CustomButton({ children, onPress, style, textStyle }: CustomButtonProps) {
+export default function CustomButton({ children, onPress, style, textStyle, loading, disabled }: CustomButtonProps) {
     return (
-        <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-            {typeof children === "string" ? (
-                <Text style={[styles.buttonText, textStyle]}>{children}</Text>
+        <TouchableOpacity
+            style={[styles.button, style, (disabled || loading) && styles.disabled]}
+            onPress={onPress}
+            disabled={disabled || loading}
+        >
+            {loading ? (
+                <ActivityIndicator color="white" />
             ) : (
-                children
+                typeof children === "string" ? (
+                    <Text style={[styles.buttonText, textStyle]}>{children}</Text>
+                ) : (
+                    children
+                )
             )}
         </TouchableOpacity>
     );
@@ -34,4 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
     },
+    disabled: {
+        backgroundColor: "#ccc",
+    }
 });

@@ -13,6 +13,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
+
         <Stack.Protected guard={!isLoggedIn}>
           <Stack.Screen name="(Auth)" />
         </Stack.Protected>

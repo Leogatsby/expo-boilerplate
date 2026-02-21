@@ -1,11 +1,15 @@
-import CustomButton from '@/components/ui/CustomButton'
-import SafeAreaContainer from '@/components/ui/SafeAreaContainer'
-import { useAuthStore } from '@/store/useAuthStore'
+//1-0)시스템로직_라우팅
+//1-1)퍼블리싱로직_기초엘리먼트 퍼블리싱
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
+//1-2)퍼블리싱로직_콤포넌트UI
+import CustomButton from '@/components/ui/CustomButton'
+import SafeAreaContainer from '@/components/ui/SafeAreaContainer'
+//2.데이터바인딩 로직
+import { useAuthStore } from '@/store/useAuthStore'
 
 export default function Profile() {
-    const logout = useAuthStore((state) => state.logout);
+    const { logout } = useAuthStore((AuthStore) => AuthStore.Actions);
 
     return (
         <SafeAreaContainer style={styles.container}>

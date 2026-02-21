@@ -1,13 +1,26 @@
-import { useAuthStore } from "@/store/useAuthStore";
+//1-0)시스템로직_라우팅/훅
 import { Stack } from "expo-router";
+import { useEffect } from "react";
+
+//1-1)퍼블리싱로직_기초엘리먼트 퍼블리싱
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+//2.데이터바인딩 로직
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function RootLayout() {
 
-  const { isLoggedIn, hasOnbordingDone } = useAuthStore();
+  const { isLoggedIn, hasOnbordingDone } = useAuthStore((AuthStore) => AuthStore.State);
+  const { initializeAuth } = useAuthStore((AuthStore) => AuthStore.Actions);
 
-  console.log("isLoggedIn : ", isLoggedIn, "hasOnbordingDone :", hasOnbordingDone);
+  useEffect(() => {
+    // 앱이 시작될 때 Supabase 세션 리스너를 실행하여 자동 로그인/로그아웃 처리를 담당합니다.
+    initializeAuth();
+    console.log("앱이 시작될때 Supabase 세션 리스너를 실행하여 자동 로그인/로그아웃 처리를 담당합니다.")
+    console.log("isLoggedIn : ", isLoggedIn, "hasOnbordingDone :", hasOnbordingDone);
+
+  }, []);
+
 
   return (
     <SafeAreaProvider>

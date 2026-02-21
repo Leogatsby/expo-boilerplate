@@ -1,6 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
+//1-0)시스템로직_라우팅
 import { Tabs } from 'expo-router';
+//1-1)퍼블리싱로직_기초엘리먼트 퍼블리싱
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+//1-2)퍼블리싱로직_콤포넌트UI
+//2.데이터바인딩 로직
 
 export default function TabsLayout() {
     return (

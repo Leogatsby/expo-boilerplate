@@ -1,13 +1,16 @@
-import CustomButton from '@/components/ui/CustomButton'
-import { useAuthStore } from '@/store/useAuthStore'
+//1-0)시스템로직_라우팅
 import { useRouter } from 'expo-router'
-import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
+//1-1)퍼블리싱로직_기초엘리먼트 퍼블리싱
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+//1-2)퍼블리싱로직_콤포넌트UI
+import CustomButton from '@/components/ui/CustomButton'
 import SafeAreaContainer from '../../components/ui/SafeAreaContainer'
+//2.데이터바인딩 로직
+import { useAuthStore } from '@/store/useAuthStore'
+import { Controller, useForm } from 'react-hook-form'
 
 export default function Login() {
-    const login = useAuthStore((state) => state.login);
+    const { loginWithEmail } = useAuthStore((AuthStore) => AuthStore.Actions);
     const router = useRouter();
 
 
@@ -18,9 +21,15 @@ export default function Login() {
         }
     });
 
-    const onSubmit = (data: any) => {
-        console.log("Login Data:", data);
-        login();
+    const onSubmit = async (payload: any) => {
+        console.log("Login Payload:", payload);
+        try {
+            // Zustand 스토어의 로그인 로직 호출
+            await loginWithEmail(payload.email, payload.password);
+        } catch (error: any) {
+            // Error alert is handled inside the store
+            console.error("Login component error:", error);
+        }
     };
 
     return (

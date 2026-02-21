@@ -1,13 +1,16 @@
+//1-0)시스템로직_라우팅
+import { useRouter } from 'expo-router'
+//1-1)퍼블리싱로직_기초엘리먼트 퍼블리싱
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+//1-2)퍼블리싱로직_콤포넌트UI
 import CustomButton from '@/components/ui/CustomButton'
 import SafeAreaContainer from '@/components/ui/SafeAreaContainer'
+//2.데이터바인딩 로직
 import { useAuthStore } from '@/store/useAuthStore'
-import { useRouter } from 'expo-router'
-import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function Register() {
-    const login = useAuthStore((state) => state.login);
+    const { registerWithEmail } = useAuthStore((AuthStore) => AuthStore.Actions);
     const router = useRouter();
 
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -18,10 +21,24 @@ export default function Register() {
         }
     });
 
-    const onSubmit = (data: any) => {
-        console.log("Register Data:", data);
-        // 회원가입 로직 후 로그인 처리하는 시나리오
-        login();
+    const onSubmit = async (payload: any) => {
+        console.log("Register Payload:", payload);
+
+        if (payload.password !== payload.confirmPassword) {
+            Alert.alert("오류", "비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        try {
+            // Zustand 스토어의 가입 로직 호출
+            await registerWithEmail(payload.email, payload.password);
+
+            // Success alert is handled in store, navigate to login
+            router.push('/(Auth)/Login');
+        } catch (error: any) {
+            // Error alert is handled inside the store
+            console.error("Registration component error:", error);
+        }
     };
 
     return (
